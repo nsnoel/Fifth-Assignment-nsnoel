@@ -49,3 +49,73 @@ result_list = [
 
 
 '''
+import csv 
+#1 
+
+def create_new_file(name_list, address_list, phone_list):
+    result_list = [{'name': name, 'address': address, 'phone': phone} 
+    for name,address,phone in zip(name_list,address_list,phone_list)]
+
+    keys = result_list[0].keys()
+
+    output_file = open('contacts.csv', 'w')
+    dict_writer = csv.DictWriter(output_file, keys)
+    dict_writer.writeheader()
+    dict_writer.writerows(result_list)
+
+    output_file.close()
+
+if __name__ == "__main__":
+    name_list = ['Joe', 'Max', 'Nichole', 'Ruby', 'Sofia', 'Noah', 'Anna', 'Jared', 'Eric', 'Martin']
+    address_list = ['Addr 1', 'Addr 2', 'Addr 3', 'Addr 4', 'Addr 5', 'Addr 6', 'Addr 7', 'Addr 8', 'Addr 9', 'Addr 10']
+    phone_list = ['7354758876', '883628034', '6338569903', '1237984773', '3898376273', '386258826', '93252734', '383763793', '8375268373', '7254163474' ]
+
+    create_new_file(name_list, address_list, phone_list)
+   
+
+#2 
+
+def compile_poem(file_list):
+    with open('roads_not_taken.txt', 'w') as outputfile:
+        for names in file_list:
+            with open(names) as inputfile: 
+                outputfile.write(inputfile.read())
+            outputfile.write("\n")
+
+
+if __name__ == "__main__":
+    file_list = ['tow_roads_1.txt', 'two_road_2.txt', 'two_roads_3.txt', 'two_roads_4.txt']
+    compile_poem(file_list)
+
+
+#3
+
+def write_custom_parser(file_name):
+    csv_fd = open(file_name, 'r')
+    csv_reader = csv.reader(csv_fd)
+    
+    count = 0
+    list_from_dicts = []
+    int_dict = {}
+    for row in csv_reader:
+        row = row[0]
+        if 'Student' in row:
+            row = row.split()
+            int_dict['student'] = row[1]
+        if 'Year' in row:
+            row = row.split()
+            int_dict['year'] = row[1]
+        if 'Grade' in row:
+            row = row.split()
+            int_dict['grade'] = row[1]
+        count += 1 
+        if count % 4 == 0:
+            list_from_dicts.append(int_dict)
+            int_dict = {}    
+
+    return list_from_dicts
+
+if __name__ == "__main__":
+    file_name = 'parsed_file.txt'
+    result = write_custom_parser(file_name)
+    print(result)
